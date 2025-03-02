@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiper Coverflow</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <style>
+      
+        body {
+            background-color: black;
+            color: white;
+        }
+        .swiper {
+            width: 600px;
+            height: 400px;
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 300px;
+            height: 100px;
+            
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+            h1 {
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+            }
+
+            .paragraph {
+                text-align: center;
+                padding: 10px;
+                font-family:Georgia, 'Times New Roman', Times, serif
+            }
+
+            button {
+                padding: 10px;
+                border-radius: 10px;
+                border: none;
+            }
+    </style>
+</head>
+<body>
+    <audio id="myAudio" controls></audio>
+
+    <div>
+        <button id="previousButton">Previous</button>
+        <button id="shuffleButton">Shuffle</button>
+        <button id="nextButton">Next</button>
+    </div>
+<div>
+    <h1>Favorite Memories</h1>
+    <h2>From kayne to you &#128154;</h2>
+</div>
+<div class="swiper">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            <img src="./IMG_6703.jpg"  alt="">
+        </div>
+        <div class="swiper-slide">
+            <img src="./IMG_6704.png" height="200px">
+        </div>
+        <div class="swiper-slide">
+            <img src="./IMG_6705.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+             <img src="./IMG_6706.jpg" alt="">
+        </div>
+        <div class="swiper-slide">
+            <img src="./IMG_6707.jpg"  alt="">
+        </div>
+        <div class="swiper-slide">
+            <img src="./IMG_6708.jpg"  alt="">
+        </div>
+    </div>
+    <div class="swiper-pagination"></div>
+</div>
+
+<div>
+    <h1>
+        From the depth of my heart
+    </h1>
+    <p class="paragraph">Firstly, i want to thank you for everything you've done for me ^^. 
+        Making that move on you is one of the best decision i've ever made in my entire life :3.
+         <br>You're the greatest thing that have ever happened to me and i'm grateful to God.
+          You're my world, My Everything, My All in one, My One in All.
+           <br>SInce the time i've met you, I cry a little less, laugh a little harder, and smile all the more, 
+           just because i have you, my life is a better place =^.^=.
+            <br>Just when i think it is impossible to love you any more than i already do,
+             you prove me wrong. If i could give you one thing in life, 
+             i'd give you the ability to see yourslef through my eyes. 
+             Only then you would realize how special you are to me. 
+             <br> You add a breath of fresh air and a ray of sunshine to this day-to-day routine we call life.
+              I want to be the reason behind your smile beautiful smile today and everyday. 
+              There are only two times i want to be with you: Now and Forever. 
+              My Six-word love story: "I can't imagine life without you". I LOVE YOU NOW AND FOREVER ERIK SWANSON &#128154; <br> <3</p>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    const swiper = new Swiper('.swiper', {
+        effect: 'coverflow',
+        grabCursor: true,
+        centeredSlides: true,
+        slidesPerView: 'auto',
+        slideToClickedSlide: true,
+        swiperResponsive: true,
+        swiperMode: 'adaptive',
+        coverflowEffect: {
+            rotate: 1,
+            stretch: 0,
+            depth: 300,
+            modifier: 2,
+            slideShadows: true,
+        },
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        loop: true,
+    });
+    const audio = document.getElementById("myAudio");
+        const musicFiles = [
+            "http://jamen.do/t/2230315",
+            "./Noah Kahan - You’re Gonna Go Far (Official Lyric Video).mp3",
+            "./M83 'Midnight City' Official video.mp3",
+            "./Anne-Marie & James Arthur - Rewrite The Stars [from The Greatest Showman： Reimagined].mp3",
+            "./James Arthur - Say You Won't Let Go.mp3",
+            "./Jason Derulo - Trumpets (Lyrics).mp3",
+            "./Lauren Spencer Smith - Fingers Crossed.mp3",
+            "./Love Yourself - Justin Bieber (Lyrics) 🎵.mp3",
+            "./Phoebe Bridgers - I Know the End (Official Video).mp3",
+            "./Phoebe Bridgers - Kyoto (Official Video).mp3",
+            "./Phoebe Bridgers Waiting Room Lyric Video.mp3",
+            "./Benson Boone - Beautiful Things (Official Music Video).mp3",
+            "./Benson Boone - Slow It Down (Official Music Video).mp3",
+            "./Billie Eilish - BIRDS OF A FEATHER (Official Music Video).mp3",
+            "./boygenius - Not Strong Enough (official audio).mp3",
+            "./Bruno Mars - Count on Me (Official Lyric Video).mp3",
+            "./Clairo - Sofia.mp3",
+            "./Devon Gabriella - easy (Acapella).mp3",
+            "./Gracie Abrams - I Love You, I'm Sorry.mp3",
+            "./Gracie Abrams - Risk (Audio).mp3",
+        ];
+        let currentTrack = 0;
+        let shuffled = false;
+        let shuffledPlaylist = [];
+
+        function playTrack(trackIndex) {
+            audio.src = musicFiles[trackIndex];
+            audio.play().catch(error => {
+                console.error("Playback failed:", error);
+            });
+            audio.addEventListener("ended", playNextTrack);
+            currentTrack = trackIndex;
+        }
+
+        function playNextTrack() {
+            if (shuffled) {
+                if (shuffledPlaylist.length > 0) {
+                    playTrack(shuffledPlaylist.shift());
+                } else {
+                    // Reshuffle and start again or stop
+                    shufflePlaylist();
+                    playTrack(shuffledPlaylist.shift());
+                }
+            } else {
+                currentTrack++;
+                if (currentTrack < musicFiles.length) {
+                    playTrack(currentTrack);
+                } else {
+                    currentTrack = 0; // Loop to the first track
+                    playTrack(currentTrack);
+                }
+            }
+        }
+
+        function playPreviousTrack() {
+            if (shuffled) {
+                shufflePlaylist();
+                playTrack(shuffledPlaylist.shift());
+            } else {
+                currentTrack--;
+                if (currentTrack >= 0) {
+                    playTrack(currentTrack);
+                } else {
+                    currentTrack = musicFiles.length - 1;
+                    playTrack(currentTrack);
+                }
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function shufflePlaylist() {
+            shuffledPlaylist = [...musicFiles.keys()]; // Create an array of indices
+            shuffleArray(shuffledPlaylist);
+        }
+
+        document.getElementById("shuffleButton").addEventListener("click", () => {
+            shuffled = !shuffled;
+            if (shuffled) {
+                shufflePlaylist();
+                playTrack(shuffledPlaylist.shift());
+            } else {
+                playTrack(currentTrack); // Resume normal sequential play
+            }
+        });
+
+        document.getElementById("nextButton").addEventListener("click", () => {
+            playNextTrack();
+        });
+
+        document.getElementById("previousButton").addEventListener("click", () => {
+            playPreviousTrack();
+        });
+
+        playTrack(currentTrack); // Start playback
+
+        audio.volume = 0.2; // Set initial volume
+    
+</script>
+
+</body>
+</html>
